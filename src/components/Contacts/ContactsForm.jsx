@@ -17,7 +17,6 @@ class ContactForm extends Component {
   }
 
 
-
   handleSubmit = event => {
     event.preventDefault();
     const { name, number } = this.state;
