@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import ContactForm from './Contacts/ContactsForm';
 import ContactList from './Contacts/ContactList';
-import { Filter } from './Contacts/FilterContacts';
+import  Filter  from './Contacts/FilterContacts';
 
 
 const App = () => {
@@ -51,8 +51,7 @@ const App = () => {
       );
     };
     
-      
-      
+
       return (
         <div>
           <h1>Phonebook</h1>

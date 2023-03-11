@@ -1,65 +1,64 @@
 
-import React, { Component } from "react";
-import css from './Styles.module.css'
-import { nanoid } from "nanoid";
-import PropTypes from 'prop-types'
+import css from './Styles.module.css';
+import { nanoid } from 'nanoid';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 
+const ContactForm = () => {
+  
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  }
+   const dispatch = useDispatch();
 
-  handleChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value, });
-  }
+ 
 
-
-  handleSubmit = event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    const { name, number } = this.state;
-    const obj = {id: nanoid(), name: name, number: number };
-    const { onSubmit, contacts } = this.props;
-    onSubmit(obj);
-    if (contacts.find(contact => contact.name === name)) {
-      return;
-    }
-    this.reset();
-  }
+    const obj = { id: nanoid(), name, number };
+    dispatch(addContact(obj));
+    reset();
+    
+    // onSubmit(obj);
+    // if (contacts.find(contact => contact.name === name)) {
+    //   return;
+    // }
+    // this.reset();
+  };
 
-  reset = () => {
-    this.setState({ name: '', number: '' })
-  }
+  const reset = () => {
+    setName('');
+    setNumber('');
+  };
 
-  render() {
-
+  
     return (
-      <form onSubmit={this.handleSubmit} className={css.form} action="">
-        <label className={css.label} htmlFor={this.nameInputId}>
+      <form onSubmit={handleSubmit} className={css.form} action="">
+        <label className={css.label} htmlFor="nameInputId">
           Name{' '}
           <input
             className={css.input}
-            id={this.nameInputId}
+            id="nameInputId"
             type="text"
             name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
+            value={name}
+            onChange={e => setName(e.target.value)}
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />{' '}
         </label>
-        <label className={css.label} htmlFor={this.numberInputId}>
+        <label className={css.label} htmlFor="nameInputId">
           Phone
           <input
             className={css.input}
-            id={this.numberInputId}
+            id="nameInputId"
             type="tel"
             name="number"
-            value={this.state.number}
-            onChange={this.handleChange}
+            value={number}
+            onChange={e => setNumber(e.target.value)}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
@@ -69,15 +68,15 @@ class ContactForm extends Component {
           Add contact
         </button>
       </form>
-    )
+    );
   }
-}
 
 
 ContactForm.propTypes = {
   contacts: PropTypes.arrayOf(PropTypes.object),
   onSubmit: PropTypes.func.isRequired,
-}
+};
 
 export default ContactForm;
+
 
